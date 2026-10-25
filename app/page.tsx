@@ -22,7 +22,7 @@ export default function Home() {
           <a href="#about" onClick={() => setMenuOpen(false)}>عن STEPUP</a>
           <a href="#contact" onClick={() => setMenuOpen(false)}>تواصل معنا</a>
         </nav>
-        <a className="header-cta" href={whatsapp} target="_blank" rel="noreferrer">اطلب عبر واتساب ↗</a>
+        <a className="header-cta" href="/products">تصفح المنتجات ↗</a>
       </header>
 
       <section className="hero">
@@ -31,7 +31,7 @@ export default function Home() {
           <h1>مش مجرد<br/><em>جزمة.</em><br/>دي خطوتك.</h1>
           <p className="hero-desc">اختار ستايلك، وخلّي كل خطوة تعبّر عنك. اكتشف اختيارات STEPUP للرجالي والحريمي.</p>
           <div className="hero-actions">
-            <a className="primary-button" href="#categories">اكتشف المجموعة <span>←</span></a>
+            <a className="primary-button" href="/products">تصفح المنتجات <span>←</span></a>
             <a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">اسألنا عن الموديلات ↗</a>
           </div>
           <div className="hero-note"><span>01</span> ستايل يناسبك <i/> <span>02</span> اختيارك على مزاجك</div>
