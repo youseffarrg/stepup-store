@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import LeadCapture from "@/app/components/LeadCapture";
 
 const whatsapp = "https://wa.me/201274907577";
 const categories = [
@@ -13,6 +14,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <main className="store" dir="rtl">
+      <LeadCapture />
       <div className="announcement">خطوتك الجاية تبدأ من هنا — تابعنا لمعرفة أحدث الموديلات</div>
       <header className="site-header">
         <a className="brand" href="#" aria-label="STEPUP الصفحة الرئيسية"><span>STEP</span><b>UP</b><small>MOVE WITH CONFIDENCE</small></a>
