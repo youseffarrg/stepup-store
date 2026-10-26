@@ -28,7 +28,7 @@ export default function ProductsPage(){
       product_id:selected.id,product_name:selected.name,quantity:1,unit_price:unitPrice,
       customer_name:customer.name.trim(),customer_phone:customer.phone.trim(),customer_address:customer.address.trim(),
       size:customer.size.trim(),notes:customer.notes.trim(),status:"new",payment_method:"cash_on_delivery"
-    }).select("order_number").single();
+    });
     setSending(false);
     if(error){setOrderMessage("لم نتمكن من حفظ الطلب في النظام: "+error.message);return;}
     const text=["طلب جديد من متجر STEPUP","رقم الطلب: "+(data?.order_number||"سيتم تأكيده من المتجر"),"المنتج: "+selected.name,"السعر: "+unitPrice+" جنيه","المقاس: "+(customer.size||"يُحدد بالتواصل"),"الاسم: "+customer.name,"الموبايل: "+customer.phone,"العنوان: "+customer.address,"ملاحظات: "+(customer.notes||"لا يوجد"),"الدفع: عند الاستلام"].join("\n");
