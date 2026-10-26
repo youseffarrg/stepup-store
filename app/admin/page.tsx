@@ -51,7 +51,7 @@ export default function AdminPage() {
     setLoading(false);if(result.error){setMessage("لم يتم حفظ المنتج: "+result.error.message);return;}setMessage("تم حفظ المنتج بنجاح.");resetForm();await checkAdmin();
   }
   async function toggleProduct(p:Product){if(!supabase)return;const {error}=await supabase.from("stepup_products").update({is_active:!p.is_active,updated_at:new Date().toISOString()}).eq("id",p.id);if(error)setMessage("تعذر تغيير حالة المنتج: "+error.message);else await checkAdmin();}
-  async function updateOrder(id:number,status:string){if(!supabase)return;const {error}=await supabase.from("stepup_orders").update({status,updated_at:new Date().toISOString()}).eq("id",id);if(error)setMessage("تعذر تحديث الطلب: "+error.message);else{setMessage("تم تحديث حالة الطلب.");await checkAdmin();}}
+  async function updateOrder(id:number,status:string){if(!supabase)return;setLoading(true);setMessage("");const {error}=await supabase.rpc("set_stepup_order_status",{p_order_id:id,p_status:status});setLoading(false);if(error)setMessage("تعذر تحديث الطلب أو المخزون: "+error.message);else{setMessage(status==="confirmed"?"تم تأكيد الطلب وخصم الكمية من المخزون بنجاح.":status==="cancelled"?"تم إلغاء الطلب. وإذا كان مؤكدًا أو قيد التجهيز، تمت إعادة الكمية للمخزون.":"تم تحديث حالة الطلب.");await checkAdmin();}}
   const money=(n:number)=>Number(n||0).toLocaleString("ar-EG")+" ج.م";
   return <main dir="rtl" style={{minHeight:"100vh",background:"#f5f2ec",color:"#171717",fontFamily:"Cairo,Arial,sans-serif",padding:16}}>
     <div style={{maxWidth:1200,margin:"0 auto"}}>
