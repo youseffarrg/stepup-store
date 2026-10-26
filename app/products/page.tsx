@@ -33,7 +33,7 @@ export default function ProductsPage(){
     setSending(false);
     if(error){setOrderMessage("لم نتمكن من حفظ الطلب في النظام: "+error.message);return;}
     const text=["طلب جديد من متجر STEPUP","رقم الطلب: سيتم تأكيده من المتجر","المنتج: "+selected.name,"الكمية: "+quantity+" قطعة","إجمالي السعر: "+bundleTotal+" جنيه","المقاس: "+(customer.size||"يُحدد بالتواصل"),"الاسم: "+customer.name,"الموبايل: "+customer.phone,"العنوان: "+customer.address,"ملاحظات: "+(customer.notes||"لا يوجد"),"الدفع: عند الاستلام"].join("\n");
-    window.open("https://wa.me/201274907577?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
+    window.open("https://wa.me/201055676181?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
     setOrderMessage("تم تسجيل طلبك بنجاح. افتح واتساب لإرسال تفاصيله وتأكيده.");
     setSelected(null);setCustomer({name:"",phone:"",address:"",size:"",notes:""});setQuantity(1);
   }
