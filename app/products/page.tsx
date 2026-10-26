@@ -32,7 +32,7 @@ export default function ProductsPage(){
     setSending(false);
     if(error){setOrderMessage("لم نتمكن من حفظ الطلب في النظام: "+error.message);return;}
     const text=["طلب جديد من متجر STEPUP","رقم الطلب: "+(data?.order_number||"سيتم تأكيده من المتجر"),"المنتج: "+selected.name,"الكمية: "+quantity+" قطعة","إجمالي السعر: "+bundleTotal+" جنيه","المقاس: "+(customer.size||"يُحدد بالتواصل"),"الاسم: "+customer.name,"الموبايل: "+customer.phone,"العنوان: "+customer.address,"ملاحظات: "+(customer.notes||"لا يوجد"),"الدفع: عند الاستلام"].join("\n");
-    window.open("https://wa.me/201055676181?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
+    window.open("https://wa.me/201274907577?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
     setOrderMessage("تم تسجيل طلبك بنجاح. افتح واتساب لإرسال تفاصيله وتأكيده.");
     setSelected(null);setCustomer({name:"",phone:"",address:"",size:"",notes:""});setQuantity(1);
   }
@@ -62,7 +62,7 @@ export default function ProductsPage(){
     {selected&&<div role="dialog" aria-modal="true" aria-label="نموذج الطلب" style={{position:"fixed",inset:0,background:"#0009",zIndex:20,display:"grid",placeItems:"center",padding:16}}>
       <section style={{background:"#f5f2ec",width:"min(100%,520px)",maxHeight:"90vh",overflow:"auto",padding:22}}>
         <div style={{display:"flex",justifyContent:"space-between",gap:10}}><h2 style={{marginTop:0}}>طلب {selected.name}</h2><button onClick={()=>setSelected(null)} aria-label="إغلاق" style={{border:0,background:"transparent",fontSize:24}}>×</button></div>
-        <p>سعر القطعة: {priceOf(selected)} جنيه — الدفع عند الاستلام</p><label style={{display:"block",marginTop:12}}>الكمية المطلوبة<select value={quantity} onChange={e=>setQuantity(Number(e.target.value))} style={inputStyle}>{Array.from({length:Math.min(3,selected.stock_quantity)},(_,i)=>i+1).map(n=><option key={n} value={n}>{n} {n===1?"قطعة":"قطع"}</option>)}</select></label><div style={{marginTop:10,padding:12,background:"#fff"}}>{quantity===2&&selected.bundle_2_price!=null?<>عرض القطعتين: <strong>{Number(selected.bundle_2_price)} جنيه</strong></>:quantity===3&&selected.bundle_3_price!=null?<>عرض الثلاث قطع: <strong>{Number(selected.bundle_3_price)} جنيه</strong>:<>الإجمالي: <strong>{priceOf(selected)*quantity} جنيه</strong></>}</div>
+        <p>سعر القطعة: {priceOf(selected)} جنيه — الدفع عند الاستلام</p><label style={{display:"block",marginTop:12}}>الكمية المطلوبة<select value={quantity} onChange={e=>setQuantity(Number(e.target.value))} style={inputStyle}>{Array.from({length:Math.min(3,selected.stock_quantity)},(_,i)=>i+1).map(n=><option key={n} value={n}>{n} {n===1?"قطعة":"قطع"}</option>)}</select></label><div style={{marginTop:10,padding:12,background:"#fff"}}>{quantity===2&&selected.bundle_2_price!=null?<>عرض القطعتين: <strong>{Number(selected.bundle_2_price)} جنيه</strong></>:quantity===3&&selected.bundle_3_price!=null?<>عرض الثلاث قطع: <strong>{Number(selected.bundle_3_price)} جنيه</strong></>:<>الإجمالي: <strong>{priceOf(selected)*quantity} جنيه</strong></>}</div>
         <form onSubmit={e=>{e.preventDefault();void order();}}>
           <label style={{display:"block",marginTop:12}}>الاسم الكامل<input required value={customer.name} onChange={e=>setCustomer({...customer,name:e.target.value})} style={inputStyle}/></label>
           <label style={{display:"block",marginTop:12}}>رقم الموبايل<input required inputMode="tel" value={customer.phone} onChange={e=>setCustomer({...customer,phone:e.target.value})} style={inputStyle}/></label>
