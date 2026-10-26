@@ -4,16 +4,16 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { supabase } from "../../lib/supabase";
 
-type Product = { id:number; name:string; description:string; category:string; image_url:string; image_urls?:string[]; price:number; sale_price:number|null; stock_quantity:number; sizes:string; is_active:boolean };
+type Product = { id:number; name:string; description:string; category:string; image_url:string; image_urls?:string[]; price:number; sale_price:number|null; bundle_2_price:number|null; bundle_3_price:number|null; stock_quantity:number; sizes:string; is_active:boolean };
 function priceOf(p:Product){return p.sale_price!=null&&Number(p.sale_price)>0?Number(p.sale_price):Number(p.price||0);}
 
 export default function ProductsPage(){
   const [products,setProducts]=useState<Product[]>([]); const [loading,setLoading]=useState(true); const [error,setError]=useState("");
   const [search,setSearch]=useState(""); const [selected,setSelected]=useState<Product|null>(null); const [imageIndexes,setImageIndexes]=useState<Record<number,number>>({}); const [lightbox,setLightbox]=useState<{images:string[];index:number;name:string}|null>(null);
-  const [customer,setCustomer]=useState({name:"",phone:"",address:"",size:"",notes:""});
+  const [customer,setCustomer]=useState({name:"",phone:"",address:"",size:"",notes:""}); const [quantity,setQuantity]=useState(1);
   const [sending,setSending]=useState(false); const [orderMessage,setOrderMessage]=useState("");
   useEffect(()=>{let alive=true;async function load(){if(!supabase){setError("إعدادات قاعدة البيانات غير مكتملة.");setLoading(false);return;}
-    const {data,error}=await supabase.from("stepup_products").select("id,name,description,category,image_url,image_urls,price,sale_price,stock_quantity,sizes,is_active").eq("is_active",true).order("created_at",{ascending:false}).limit(100);
+    const {data,error}=await supabase.from("stepup_products").select("id,name,description,category,image_url,image_urls,price,sale_price,bundle_2_price,bundle_3_price,stock_quantity,sizes,is_active").eq("is_active",true).order("created_at",{ascending:false}).limit(100);
     if(!alive)return;if(error)setError("مش قادرين نعرض المنتجات حاليًا. راجع جدول stepup_products وصلاحياته في Supabase.");else setProducts((data||[]) as Product[]);setLoading(false);}
     void load();return()=>{alive=false;};},[]);
   const visible=useMemo(()=>products.filter(p=>p.name.toLowerCase().includes(search.toLowerCase())),[products,search]);
@@ -21,20 +21,20 @@ export default function ProductsPage(){
   function imagesOf(p:Product){return p.image_urls?.length?p.image_urls:(p.image_url?[p.image_url]:[]);}
   async function order(){
     if(!supabase||!selected||!customer.name.trim()||!customer.phone.trim()||!customer.address.trim())return;
-    if(selected.stock_quantity<1){setOrderMessage("المنتج غير متوفر في المخزون حاليًا.");return;}
+    if(selected.stock_quantity<quantity){setOrderMessage("الكمية المطلوبة أكبر من المتاح في المخزون.");return;}
     setSending(true);setOrderMessage("");
-    const unitPrice=priceOf(selected);
+    const unitPrice=priceOf(selected); const bundleTotal=quantity===3&&selected.bundle_3_price!=null?Number(selected.bundle_3_price):quantity===2&&selected.bundle_2_price!=null?Number(selected.bundle_2_price):unitPrice*quantity; const effectiveUnitPrice=bundleTotal/quantity;
     const {data,error}=await supabase.from("stepup_orders").insert({
-      product_id:selected.id,product_name:selected.name,quantity:1,unit_price:unitPrice,
+      product_id:selected.id,product_name:selected.name,quantity,unit_price:effectiveUnitPrice,
       customer_name:customer.name.trim(),customer_phone:customer.phone.trim(),customer_address:customer.address.trim(),
       size:customer.size.trim(),notes:customer.notes.trim(),status:"new",payment_method:"cash_on_delivery"
     });
     setSending(false);
     if(error){setOrderMessage("لم نتمكن من حفظ الطلب في النظام: "+error.message);return;}
-    const text=["طلب جديد من متجر STEPUP","رقم الطلب: "+(data?.order_number||"سيتم تأكيده من المتجر"),"المنتج: "+selected.name,"السعر: "+unitPrice+" جنيه","المقاس: "+(customer.size||"يُحدد بالتواصل"),"الاسم: "+customer.name,"الموبايل: "+customer.phone,"العنوان: "+customer.address,"ملاحظات: "+(customer.notes||"لا يوجد"),"الدفع: عند الاستلام"].join("\n");
+    const text=["طلب جديد من متجر STEPUP","رقم الطلب: "+(data?.order_number||"سيتم تأكيده من المتجر"),"المنتج: "+selected.name,"الكمية: "+quantity+" قطعة","إجمالي السعر: "+bundleTotal+" جنيه","المقاس: "+(customer.size||"يُحدد بالتواصل"),"الاسم: "+customer.name,"الموبايل: "+customer.phone,"العنوان: "+customer.address,"ملاحظات: "+(customer.notes||"لا يوجد"),"الدفع: عند الاستلام"].join("\n");
     window.open("https://wa.me/201274907577?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
     setOrderMessage("تم تسجيل طلبك بنجاح. افتح واتساب لإرسال تفاصيله وتأكيده.");
-    setSelected(null);setCustomer({name:"",phone:"",address:"",size:"",notes:""});
+    setSelected(null);setCustomer({name:"",phone:"",address:"",size:"",notes:""});setQuantity(1);
   }
   const inputStyle={width:"100%",padding:"12px",border:"1px solid #ddd",background:"#fff",borderRadius:0,font:"inherit",marginTop:"5px",boxSizing:"border-box" as const};
   return <main dir="rtl" style={{minHeight:"100vh",background:"#f5f2ec",color:"#151515"}}>
@@ -62,7 +62,7 @@ export default function ProductsPage(){
     {selected&&<div role="dialog" aria-modal="true" aria-label="نموذج الطلب" style={{position:"fixed",inset:0,background:"#0009",zIndex:20,display:"grid",placeItems:"center",padding:16}}>
       <section style={{background:"#f5f2ec",width:"min(100%,520px)",maxHeight:"90vh",overflow:"auto",padding:22}}>
         <div style={{display:"flex",justifyContent:"space-between",gap:10}}><h2 style={{marginTop:0}}>طلب {selected.name}</h2><button onClick={()=>setSelected(null)} aria-label="إغلاق" style={{border:0,background:"transparent",fontSize:24}}>×</button></div>
-        <p>السعر: {priceOf(selected)} جنيه — الدفع عند الاستلام</p>
+        <p>سعر القطعة: {priceOf(selected)} جنيه — الدفع عند الاستلام</p><label style={{display:"block",marginTop:12}}>الكمية المطلوبة<select value={quantity} onChange={e=>setQuantity(Number(e.target.value))} style={inputStyle}>{Array.from({length:Math.min(3,selected.stock_quantity)},(_,i)=>i+1).map(n=><option key={n} value={n}>{n} {n===1?"قطعة":"قطع"}</option>)}</select></label><div style={{marginTop:10,padding:12,background:"#fff"}}>{quantity===2&&selected.bundle_2_price!=null?<>عرض القطعتين: <strong>{Number(selected.bundle_2_price)} جنيه</strong></>:quantity===3&&selected.bundle_3_price!=null?<>عرض الثلاث قطع: <strong>{Number(selected.bundle_3_price)} جنيه</strong>:<>الإجمالي: <strong>{priceOf(selected)*quantity} جنيه</strong></>}</div>
         <form onSubmit={e=>{e.preventDefault();void order();}}>
           <label style={{display:"block",marginTop:12}}>الاسم الكامل<input required value={customer.name} onChange={e=>setCustomer({...customer,name:e.target.value})} style={inputStyle}/></label>
           <label style={{display:"block",marginTop:12}}>رقم الموبايل<input required inputMode="tel" value={customer.phone} onChange={e=>setCustomer({...customer,phone:e.target.value})} style={inputStyle}/></label>
