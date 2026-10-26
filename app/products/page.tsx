@@ -25,7 +25,7 @@ export default function ProductsPage(){
     if(selected.stock_quantity<quantity){setOrderMessage("الكمية المطلوبة أكبر من المتاح في المخزون.");return;}
     setSending(true);setOrderMessage("");
     const unitPrice=priceOf(selected); const bundleTotal=quantity===3&&selected.bundle_3_price!=null?Number(selected.bundle_3_price):quantity===2&&selected.bundle_2_price!=null?Number(selected.bundle_2_price):unitPrice*quantity; const effectiveUnitPrice=bundleTotal/quantity;
-    const {data,error}=await supabase.from("stepup_orders").insert({
+    const {error}=await supabase.from("stepup_orders").insert({
       product_id:selected.id,product_name:selected.name,quantity,unit_price:effectiveUnitPrice,
       customer_name:customer.name.trim(),customer_phone:customer.phone.trim(),customer_address:customer.address.trim(),
       size:customer.size.trim(),notes:customer.notes.trim(),status:"new",payment_method:"cash_on_delivery"
