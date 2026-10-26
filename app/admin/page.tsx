@@ -14,7 +14,7 @@ export default function AdminPage() {
   const [session,setSession] = useState(false); const [authorized,setAuthorized] = useState(false);
   const [leads,setLeads] = useState<Lead[]>([]); const [products,setProducts] = useState<Product[]>([]); const [orders,setOrders] = useState<Order[]>([]);
   const [loading,setLoading] = useState(false); const [message,setMessage] = useState(""); const [tab,setTab] = useState("dashboard");
-  const [form,setForm] = useState(emptyProduct); const [editing,setEditing] = useState<number|null>(null);
+  const [form,setForm] = useState(emptyProduct); const [editing,setEditing] = useState<number|null>(null); const [uploadingImage,setUploadingImage] = useState(false);
 
   useEffect(() => {
     if (!supabase) return;
@@ -44,6 +44,7 @@ export default function AdminPage() {
   async function logout(){if(supabase)await supabase.auth.signOut();setSession(false);setAuthorized(false);setPassword("");}
   function editProduct(p:Product){setEditing(p.id);setForm({name:p.name,description:p.description||"",category:p.category||"رجالي",image_url:p.image_url||"",purchase_price:String(p.purchase_price??0),price:String(p.price??0),sale_price:p.sale_price==null?"":String(p.sale_price),stock_quantity:String(p.stock_quantity??0),sizes:p.sizes||""});setTab("products");}
   function resetForm(){setForm(emptyProduct);setEditing(null);}
+  async function uploadImage(file?:File){if(!supabase||!file)return;if(!file.type.startsWith("image/")){setMessage("اختار ملف صورة فقط.");return;}if(file.size>5*1024*1024){setMessage("حجم الصورة لازم يكون أقل من 5 ميجابايت.");return;}setUploadingImage(true);setMessage("");const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");const path=Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;const {error}=await supabase.storage.from("stepup-product-images").upload(path,file,{upsert:false,contentType:file.type});setUploadingImage(false);if(error){setMessage("تعذر رفع الصورة. تأكد إنك نفذت كود تجهيز مساحة الصور في Supabase.");return;}const {data}=supabase.storage.from("stepup-product-images").getPublicUrl(path);setForm(old=>({...old,image_url:data.publicUrl}));setMessage("تم رفع الصورة. احفظ المنتج لتثبيتها.");}
   async function saveProduct(e:FormEvent){e.preventDefault();if(!supabase)return;setLoading(true);setMessage("");
     const payload={name:form.name.trim(),description:form.description.trim(),category:form.category,image_url:form.image_url.trim(),purchase_price:Number(form.purchase_price)||0,price:Number(form.price)||0,sale_price:form.sale_price.trim()===""?null:Number(form.sale_price),stock_quantity:Math.max(0,Number(form.stock_quantity)||0),sizes:form.sizes.trim(),updated_at:new Date().toISOString()};
     const result=editing?await supabase.from("stepup_products").update(payload).eq("id",editing):await supabase.from("stepup_products").insert({...payload,is_active:true});
@@ -86,7 +87,7 @@ export default function AdminPage() {
             <label>سعر العرض (اختياري)<input type="number" min="0" step="0.01" value={form.sale_price} onChange={e=>setForm({...form,sale_price:e.target.value})} style={input}/></label>
             <label>كمية المخزون<input required type="number" min="0" step="1" value={form.stock_quantity} onChange={e=>setForm({...form,stock_quantity:e.target.value})} style={input}/></label>
             <label>المقاسات المتاحة<input value={form.sizes} onChange={e=>setForm({...form,sizes:e.target.value})} placeholder="مثال: 40, 41, 42, 43" style={input}/></label>
-            <label>رابط صورة المنتج<input type="url" value={form.image_url} onChange={e=>setForm({...form,image_url:e.target.value})} placeholder="https://..." style={input}/></label>
+            <label>رفع صورة من الموبايل<input type="file" accept="image/*" onChange={e=>void uploadImage(e.target.files?.[0])} style={input}/><small style={{display:"block",marginTop:5,color:"#777"}}>{uploadingImage?"جاري رفع الصورة...":"صورة حتى 5 ميجابايت"}</small></label><label>رابط الصورة (اختياري)<input type="url" value={form.image_url} onChange={e=>setForm({...form,image_url:e.target.value})} placeholder="https://..." style={input}/></label>
             <label style={{gridColumn:"1/-1"}}>الوصف<textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} style={{...input,minHeight:75}}/></label>
             <div style={{gridColumn:"1/-1",display:"flex",gap:8,flexWrap:"wrap"}}><button disabled={loading} style={btn("#ff6a1a","#171717")}>{editing?"حفظ التعديلات":"إضافة المنتج"}</button>{editing&&<button type="button" onClick={resetForm} style={btn("#eee","#222")}>إلغاء التعديل</button>}</div>
           </form></section>
