@@ -91,3 +91,49 @@ GRANT EXECUTE ON FUNCTION public.create_stepup_orders(jsonb,text,text,text,text)
 -- Prevent bypassing the server-side price/stock validation via direct public inserts.
 DROP POLICY IF EXISTS "Public can create STEPUP orders" ON public.stepup_orders;
 REVOKE INSERT ON public.stepup_orders FROM anon, authenticated;
+
+
+-- Restrict order transitions and keep stock changes atomic.
+CREATE OR REPLACE FUNCTION public.set_stepup_order_status(p_order_id bigint, p_status text)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_order public.stepup_orders%ROWTYPE;
+  v_product public.stepup_products%ROWTYPE;
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM public.stepup_admins a WHERE a.user_id = auth.uid() AND a.role IN ('admin','manager')) THEN
+    RAISE EXCEPTION 'غير مصرح بتحديث الطلب';
+  END IF;
+  IF p_status NOT IN ('new','confirmed','preparing','shipped','delivered','cancelled') THEN
+    RAISE EXCEPTION 'حالة الطلب غير صحيحة';
+  END IF;
+  SELECT * INTO v_order FROM public.stepup_orders WHERE id = p_order_id FOR UPDATE;
+  IF NOT FOUND THEN RAISE EXCEPTION 'الطلب غير موجود'; END IF;
+  IF v_order.status = p_status THEN RETURN; END IF;
+  IF v_order.status = 'new' AND p_status = 'confirmed' THEN
+    IF v_order.product_id IS NOT NULL THEN
+      SELECT * INTO v_product FROM public.stepup_products WHERE id = v_order.product_id FOR UPDATE;
+      IF NOT FOUND OR v_product.stock_quantity < v_order.quantity THEN RAISE EXCEPTION 'المخزون غير كافٍ'; END IF;
+      UPDATE public.stepup_products SET stock_quantity = stock_quantity - v_order.quantity, updated_at = now() WHERE id = v_order.product_id;
+    END IF;
+  ELSIF v_order.status = 'confirmed' AND p_status = 'preparing' THEN
+    NULL;
+  ELSIF v_order.status = 'preparing' AND p_status = 'shipped' THEN
+    NULL;
+  ELSIF v_order.status = 'shipped' AND p_status = 'delivered' THEN
+    NULL;
+  ELSIF p_status = 'cancelled' AND v_order.status IN ('new','confirmed','preparing') THEN
+    IF v_order.status IN ('confirmed','preparing') AND v_order.product_id IS NOT NULL THEN
+      UPDATE public.stepup_products SET stock_quantity = stock_quantity + v_order.quantity, updated_at = now() WHERE id = v_order.product_id;
+    END IF;
+  ELSE
+    RAISE EXCEPTION 'انتقال الحالة غير مسموح من % إلى %', v_order.status, p_status;
+  END IF;
+  UPDATE public.stepup_orders SET status = p_status, updated_at = now() WHERE id = p_order_id;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.set_stepup_order_status(bigint,text) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.set_stepup_order_status(bigint,text) TO authenticated;
