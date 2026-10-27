@@ -78,7 +78,7 @@ export default function Home() {
       </section>
 
       <section className="contact-section" id="contact"><div><p className="eyebrow">LET'S TALK</p><h2>جاهز لخطوتك<br/><em>الجاية؟</em></h2></div><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">كلمنا على واتساب <span>↗</span></a></section>
-      <footer className="site-footer"><a className="brand footer-brand" href="#"><span>STEP</span><b>UP</b><small>MOVE WITH CONFIDENCE</small></a><p>ستايلك. اختيارك. خطوتك.</p><span>© STEPUP 2026</span></footer>
+      <footer className="site-footer"><a className="brand footer-brand" href="#"><span>STEP</span><b>UP</b><small>MOVE WITH CONFIDENCE</small></a><p>ستايلك. اختيارك. خطوتك.</p><a href="/policies">الشحن والاستبدال والاسترجاع</a><span>© STEPUP 2026</span></footer>
     </main>
   );
 }
