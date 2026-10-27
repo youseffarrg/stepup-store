@@ -81,7 +81,7 @@ export default function AdminPage() {
         {tab==="products"&&<div style={{display:"grid",gap:18}}>
           <section style={panel}><h2 style={{marginTop:0}}>{editing?"تعديل المنتج":"إضافة موديل جديد"}</h2><form onSubmit={saveProduct} style={formGrid}>
             <label>اسم الموديل *<input required value={form.name} onChange={e=>setForm({...form,name:e.target.value})} style={input}/></label>
-            <label>الفئة<select value={form.category} onChange={e=>setForm({...form,category:e.target.value})} style={input}><option value="رجالي">رجالي</option><option value="حريمي">حريمي</option><option value="أطفال">أطفال</option><option value="يونيسكس">يونيسكس</option></select></label>
+            <label>الفئة<select value={form.category} onChange={e=>setForm({...form,category:e.target.value})} style={input}><option value="رجالي">رجالي</option><option value="حريمي">حريمي</option><option value="أطفال">أطفال</option><option value="رجالي وحريمي">رجالي وحريمي</option><option value="يونيسكس">يونيسكس</option></select></label>
             <label>سعر الشراء<input type="number" min="0" step="0.01" value={form.purchase_price} onChange={e=>setForm({...form,purchase_price:e.target.value})} style={input}/></label>
             <label>سعر البيع<input required type="number" min="0" step="0.01" value={form.price} onChange={e=>setForm({...form,price:e.target.value})} style={input}/></label>
             <label>سعر العرض (اختياري)<input type="number" min="0" step="0.01" value={form.sale_price} onChange={e=>setForm({...form,sale_price:e.target.value})} style={input}/></label>
