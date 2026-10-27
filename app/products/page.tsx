@@ -6,7 +6,8 @@ type Product={id:number;name:string;description:string;category:string;image_url
 type Line={key:string;product:Product;color:string;size:string;quantity:number};
 const wa="201155676181";
 const priceOf=(p:Product)=>p.sale_price!=null&&Number(p.sale_price)>0?Number(p.sale_price):Number(p.price||0);
-const sizesOf=(p:Product)=>(p.sizes||"").split(/[,،\n]/).map(s=>s.trim()).filter(Boolean);\nconst colorsOf=(p:Product)=>(p.colors||"").split(/[,،\n]/).map(s=>s.trim()).filter(Boolean);
+const sizesOf=(p:Product)=>(p.sizes||"").split(/[,،\n]/).map(s=>s.trim()).filter(Boolean);
+const colorsOf=(p:Product)=>(p.colors||"").split(/[,،\n]/).map(s=>s.trim()).filter(Boolean);
 const lineTotal=(l:Line)=>l.quantity===2&&l.product.bundle_2_price!=null?Number(l.product.bundle_2_price):l.quantity===3&&l.product.bundle_3_price!=null?Number(l.product.bundle_3_price):priceOf(l.product)*l.quantity;
 export default function ProductsPage(){
  const [products,setProducts]=useState<Product[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState(""),[search,setSearch]=useState(""),[category,setCategory]=useState("all");
