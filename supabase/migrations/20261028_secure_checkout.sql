@@ -90,7 +90,7 @@ GRANT EXECUTE ON FUNCTION public.create_stepup_orders(jsonb,text,text,text,text)
 
 -- Prevent bypassing the server-side price/stock validation via direct public inserts.
 DROP POLICY IF EXISTS "Public can create STEPUP orders" ON public.stepup_orders;
-REVOKE INSERT ON public.stepup_orders FROM anon, authenticated;
+REVOKE INSERT ON public.stepup_orders FROM PUBLIC, anon, authenticated;
 
 
 -- Restrict order transitions and keep stock changes atomic.
