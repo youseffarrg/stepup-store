@@ -2,21 +2,82 @@
 
 import Link from "next/link";
 
-const sectionStyle: React.CSSProperties = { background: "#fff", border: "1px solid #e5e0d8", padding: 20, marginBottom: 14, lineHeight: 2 };
+const sectionStyle: React.CSSProperties = {
+  background: "#fff",
+  border: "1px solid #e5e0d8",
+  borderRadius: 12,
+  padding: 20,
+  marginBottom: 14,
+  lineHeight: 2,
+};
 
 export default function PoliciesPage() {
-  return <main dir="rtl" style={{ minHeight: "100vh", background: "#f5f2ec", color: "#171717", padding: "24px 5%", fontFamily: "Cairo, Arial, sans-serif" }}>
-    <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
-      <Link href="/" style={{ fontSize: 26, fontWeight: 900 }}>STEP<span style={{ color: "#ff6a1a" }}>UP</span></Link>
-      <Link href="/products" style={{ textDecoration: "underline" }}>العودة للتسوق</Link>
-    </header>
-    <h1 style={{ fontSize: "clamp(28px,5vw,42px)" }}>سياسات STEPUP</h1>
-    <p style={{ color: "#666", lineHeight: 1.9 }}>بنوضح هنا طريقة التوصيل والتواصل وحقوقك قبل الشراء. لازم تتأكد من تفاصيل الطلب معانا قبل ما نبدأ التوصيل.</p>
-    <section style={sectionStyle}><h2>1. التوصيل وتكلفته</h2><p>التوصيل حاليًا عن طريق STEPUP مباشرة باستخدام الموتوسيكل، حسب المنطقة وإمكانية الوصول والعنوان. مفيش رسوم توصيل موحدة مضافة تلقائيًا. بعد استلام العنوان، هنتواصل معاك ونوضح تكلفة التوصيل والموعد المتوقع قبل اعتماد الطلب النهائي. لو التكلفة أو الموعد مش مناسبين، تقدر ترفض تأكيد الطلب.</p></section>
-    <section style={sectionStyle}><h2>2. تأكيد الطلب وتوفر المنتج</h2><p>تسجيل الطلب على الموقع هو طلب مبدئي، مش تأكيد نهائي لتوفر كل لون ومقاس أو لموعد التوصيل. بنتواصل معاك لمراجعة الموديل والمقاس واللون والعنوان وتكلفة التوصيل قبل التجهيز.</p></section>
-    <section style={sectionStyle}><h2>3. الاستبدال والاسترجاع</h2><p>لو محتاج استبدال أو استرجاع، تواصل معانا على واتساب قبل الاستخدام واحتفظ بالحذاء والتغليف بحالتهم قدر الإمكان. بنراجع حالة المنتج وسبب الطلب ونوضح لك الخيارات والتكاليف المتوقعة قبل الاتفاق. لازم يحدد صاحب المتجر هنا المدة والشروط النهائية بوضوح قبل بدء البيع؛ النص الحالي لا يغني عن مراجعة الالتزامات القانونية المعمول بها في مصر.</p></section>
-    <section style={sectionStyle}><h2>4. الخصوصية واستخدام البيانات</h2><p>بنستخدم بيانات الاسم ورقم الهاتف والعنوان لتسجيل الطلب والتواصل بخصوصه. بيانات العروض التسويقية تُجمع بشكل اختياري بموافقتك. ما تدخلش بيانات دفع حساسة في خانة الملاحظات. للاستفسار عن بياناتك أو طلب عدم استقبال عروض، تواصل معانا على واتساب.</p></section>
-    <section style={sectionStyle}><h2>5. التواصل</h2><p>واتساب: <a href="https://wa.me/201155676181" style={{ color: "#176b39", textDecoration: "underline" }}>01055676181</a></p><p>بنأكد تفاصيل كل طلب بشكل مباشر قبل التسليم.</p></section>
-    <footer style={{ padding: 16, textAlign: "center", color: "#777" }}>STEPUP · Move With Confidence</footer>
-  </main>;
+  return (
+    <main dir="rtl" style={{ minHeight: "100vh", background: "#f5f2ec", color: "#171717", padding: "24px 5%", fontFamily: "Cairo, Arial, sans-serif" }}>
+      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
+        <Link href="/" style={{ fontSize: 26, fontWeight: 900, textDecoration: "none" }}>STEP<span style={{ color: "#ff6a1a" }}>UP</span></Link>
+        <Link href="/products" style={{ textDecoration: "underline", color: "#171717" }}>العودة للتسوق</Link>
+      </header>
+
+      <p style={{ color: "#ff6a1a", fontWeight: 800, letterSpacing: 1 }}>STEPUP / CUSTOMER CARE</p>
+      <h1 style={{ fontSize: "clamp(28px,5vw,42px)", marginBottom: 8 }}>الشحن والاستبدال والاسترجاع</h1>
+      <p style={{ color: "#666", lineHeight: 1.9, maxWidth: 760 }}>
+        هدفنا إن تجربة الشراء تكون واضحة من البداية. راجع التفاصيل التالية، ولو عندك أي سؤال تواصل معانا قبل تأكيد الطلب.
+      </p>
+
+      <section style={sectionStyle}>
+        <h2 style={{ marginTop: 0 }}>1. التوصيل والشحن</h2>
+        <ul style={{ paddingRight: 22 }}>
+          <li>بعد تسجيل الطلب، هنتواصل معاك لتأكيد الموديل واللون والمقاس والعنوان وتوفر المنتج.</li>
+          <li>تكلفة التوصيل وميعاده بيتحددوا حسب المنطقة والعنوان، وبنوضحهم لك قبل التأكيد النهائي.</li>
+          <li>مش بنضيف رسوم شحن ثابتة تلقائيًا على إجمالي المنتجات في الموقع.</li>
+          <li>لو تكلفة التوصيل أو الموعد مش مناسبين لك، تقدر ترفض تأكيد الطلب قبل تجهيزه.</li>
+          <li>من فضلك تأكد إن رقم الموبايل والعنوان صحيحين، وخليك متاح على الهاتف لتنسيق التسليم.</li>
+        </ul>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={{ marginTop: 0 }}>2. تأكيد الطلب والدفع</h2>
+        <ul style={{ paddingRight: 22 }}>
+          <li>إرسال الطلب من الموقع هو طلب مبدئي؛ بنأكد معاك التوفر والتفاصيل وتكلفة التوصيل قبل التجهيز.</li>
+          <li>الدفع المتاح حاليًا هو الدفع عند الاستلام، ما لم يتم إبلاغك بغير ذلك بوضوح قبل تأكيد الطلب.</li>
+          <li>السعر المعروض هو سعر المنتجات، وتكلفة التوصيل — إن وجدت — بنوضحها بشكل منفصل قبل التأكيد.</li>
+        </ul>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={{ marginTop: 0 }}>3. الاستبدال والاسترجاع</h2>
+        <p>
+          حقوق الاستبدال والاسترجاع بتُطبق وفقًا لقانون حماية المستهلك المصري واللوائح المعمول بها:
+        </p>
+        <ul style={{ paddingRight: 22 }}>
+          <li>يحق لك طلب استبدال المنتج أو إرجاعه واسترداد قيمته خلال 14 يومًا من الاستلام دون إبداء أسباب، مع مراعاة الاستثناءات القانونية.</li>
+          <li>لو المنتج به عيب أو غير مطابق للمواصفات المتفق عليها، يحق لك طلب الاستبدال أو الاسترجاع خلال 30 يومًا من الاستلام وفقًا للقانون.</li>
+          <li>عند طلب الاستبدال أو الاسترجاع، تواصل معانا على واتساب واذكر رقم الطلب وسبب الطلب، واحتفظ بالمنتج وملحقاته والتغليف قدر الإمكان.</li>
+          <li>مش هنطلب منك التنازل عن أي حق مقرر لك قانونًا. وأي تفاصيل خاصة بالشحن أو رد المبلغ هتتحدد بما يتفق مع القانون والحالة الفعلية للطلب.</li>
+        </ul>
+        <p style={{ color: "#666", fontSize: 14 }}>
+          قد توجد استثناءات قانونية لبعض أنواع السلع أو الحالات؛ لو فيه استثناء ينطبق على طلبك، هنوضحه لك.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={{ marginTop: 0 }}>4. الخصوصية وبيانات الطلب</h2>
+        <p>
+          بنستخدم الاسم ورقم الهاتف والعنوان لتسجيل الطلب والتواصل معاك بخصوصه والتسليم. ما تكتبش بيانات بنكية أو كلمات مرور في خانة الملاحظات. تقدر تتواصل معانا لو عندك استفسار عن بياناتك.
+        </p>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={{ marginTop: 0 }}>5. التواصل وخدمة العملاء</h2>
+        <p>للاستفسار عن الشحن أو الاستبدال أو الاسترجاع، تواصل معانا على واتساب:</p>
+        <a href="https://wa.me/201155676181" target="_blank" rel="noreferrer" style={{ display: "inline-block", background: "#176b39", color: "#fff", padding: "10px 16px", borderRadius: 8, textDecoration: "none", fontWeight: 800 }}>
+          تواصل مع STEPUP على واتساب
+        </a>
+        <p style={{ color: "#666", marginBottom: 0 }}>يفضل الاحتفاظ برقم الطلب ورسائل تأكيد الطلب لتسهيل المتابعة.</p>
+      </section>
+
+      <footer style={{ padding: 16, textAlign: "center", color: "#777" }}>STEPUP · Move With Confidence</footer>
+    </main>
+  );
 }
