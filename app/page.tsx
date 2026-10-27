@@ -5,9 +5,10 @@ import LeadCapture from "@/app/components/LeadCapture";
 
 const whatsapp = "https://wa.me/201155676181";
 const categories = [
-  { title: "أحذية رجالي", subtitle: "ستايل يومي • كاجوال • رياضي", mark: "01", tone: "men" },
-  { title: "أحذية حريمي", subtitle: "أناقة وراحة في كل خطوة", mark: "02", tone: "women" },
-  { title: "وصل حديثًا", subtitle: "اختياراتك الجديدة تبدأ هنا", mark: "03", tone: "new" },
+  { title: "أحذية رجالي", subtitle: "ستايل يومي • كاجوال • رياضي", mark: "01", tone: "men", href: "/products?category=men" },
+  { title: "أحذية حريمي", subtitle: "أناقة وراحة في كل خطوة", mark: "02", tone: "women", href: "/products?category=women" },
+  { title: "أحذية أطفال", subtitle: "راحة وحركة لكل خطوة صغيرة", mark: "03", tone: "kids", href: "/products?category=kids" },
+  { title: "وصل حديثًا", subtitle: "أحدث الموديلات المضافة للمتجر", mark: "04", tone: "new", href: "/products?category=new" },
 ];
 
 export default function Home() {
@@ -58,9 +59,13 @@ export default function Home() {
         <div className="section-heading"><div><p className="eyebrow">FIND YOUR FIT</p><h2>اختار <em>ستايلك.</em></h2></div><p>كل خطوة ليها شكلها.<br/>ابدأ من هنا.</p></div>
         <div className="category-grid">
           {categories.map((category) => <article className={"category-card " + category.tone} key={category.mark}>
-            <div className="category-top"><span>STEPUP / {category.mark}</span><span>↙</span></div>
-            <div className="category-shape"><div className="shape-ring"/><div className="shape-block">{category.mark}</div></div>
-            <div className="category-info"><div><h3>{category.title}</h3><p>{category.subtitle}</p></div><a href={whatsapp} target="_blank" rel="noreferrer" aria-label={"اسأل عن " + category.title}>↗</a></div>
+            <a className="category-browse" href={category.href} aria-label={"تصفح " + category.title}>
+              <div className="category-top"><span>STEPUP / {category.mark}</span><span>↙</span></div>
+              <div className="category-shape"><div className="shape-ring"/><div className="shape-block">{category.mark}</div></div>
+              <div className="category-info"><div><h3>{category.title}</h3><p>{category.subtitle}</p></div><span aria-hidden="true">←</span></div>
+              <span className="category-browse-label">تصفح المنتجات</span>
+            </a>
+            <a className="category-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label={"اسأل عن " + category.title}>اسألنا على واتساب ↗</a>
           </article>)}
         </div>
         <p className="catalog-note">الموديلات والأسعار والمقاسات بتتأكد معانا مباشرة قبل الطلب.</p>
