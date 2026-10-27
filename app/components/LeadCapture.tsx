@@ -13,8 +13,8 @@ export default function LeadCapture() {
   useEffect(()=>{
     try {
       const last=Number(localStorage.getItem("stepup-lead-dismissed-at")||0);
-      const sevenDays=7*24*60*60*1000;
-      if(last&&Date.now()-last<sevenDays)return;
+      const oneDay=24*60*60*1000;
+      if(last&&Date.now()-last<oneDay)return;
     } catch {}
     const timer=window.setTimeout(()=>setOpen(true),9000);
     return ()=>window.clearTimeout(timer);
@@ -50,7 +50,7 @@ export default function LeadCapture() {
         <input value={shoeSize} onChange={e=>setShoeSize(e.target.value)} placeholder="مثال: 42 أو 38" maxLength={10} style={fieldStyle}/>
         <label style={{fontSize:13,fontWeight:700}}>القسم اللي مهتم بيه</label>
         <select value={interest} onChange={e=>setInterest(e.target.value)} style={fieldStyle}>
-          <option>الكل</option><option>رجالي</option><option>حريمي</option><option>العروض والخصومات</option>
+          <option>الكل</option><option>رجالي</option><option>حريمي</option><option>أطفال</option><option>العروض والخصومات</option>
         </select>
         <label style={{display:"flex",gap:9,alignItems:"flex-start",fontSize:12,lineHeight:1.8,color:"#444"}}>
           <input type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)} style={{marginTop:5}}/>
