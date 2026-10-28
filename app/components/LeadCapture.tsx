@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-const whatsapp = "https://wa.me/201155676181";
+const whatsapp = "https://wa.me/201055676181";
 
 export default function LeadCapture() {
   const [open,setOpen]=useState(false);
