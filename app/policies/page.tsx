@@ -68,7 +68,7 @@ export default function PoliciesPage() {
       <section style={sectionStyle}>
         <h2 style={{ marginTop: 0 }}>5. التواصل وخدمة العملاء</h2>
         <p>للاستفسار عن الشحن أو الاستبدال أو الاسترجاع، تواصل معانا على واتساب:</p>
-        <a href="https://wa.me/201155676181" target="_blank" rel="noreferrer" style={{ display: "inline-block", background: "#176b39", color: "#fff", padding: "10px 16px", borderRadius: 8, textDecoration: "none", fontWeight: 800 }}>
+        <a href="https://wa.me/201055676181" target="_blank" rel="noreferrer" style={{ display: "inline-block", background: "#176b39", color: "#fff", padding: "10px 16px", borderRadius: 8, textDecoration: "none", fontWeight: 800 }}>
           تواصل مع STEPUP على واتساب
         </a>
         <p style={{ color: "#666", marginBottom: 0 }}>يفضل الاحتفاظ برقم الطلب ورسائل تأكيد الطلب لتسهيل المتابعة.</p>
