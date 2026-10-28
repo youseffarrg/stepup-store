@@ -4,7 +4,7 @@ import Link from "next/link";
 import { supabase } from "../../lib/supabase";
 type Product={id:number;name:string;description:string;category:string;image_url:string;image_urls?:string[];colors?:string;price:number;sale_price:number|null;bundle_2_price:number|null;bundle_3_price:number|null;stock_quantity:number;sizes:string;is_active:boolean};
 type Line={key:string;product:Product;color:string;size:string;quantity:number};
-const wa="201155676181";
+const wa="201055676181";
 const priceOf=(p:Product)=>p.sale_price!=null&&Number(p.sale_price)>0&&Number(p.sale_price)<Number(p.price)?Number(p.sale_price):Number(p.price||0);
 const sizesOf=(p:Product)=>(p.sizes||"").split(/[,،\n]/).map(s=>s.trim()).filter(Boolean);
 const colorsOf=(p:Product)=>(p.colors||"").split(/[,،\n]/).map(s=>s.trim()).filter(Boolean);
