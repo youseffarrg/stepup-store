@@ -5,10 +5,10 @@ import LeadCapture from "@/app/components/LeadCapture";
 
 const whatsapp = "https://wa.me/201055676181";
 const categories = [
-  { title: "أحذية رجالي", subtitle: "ستايل يومي • كاجوال • رياضي", mark: "01", tone: "men", href: "/products?category=men" },
-  { title: "أحذية حريمي", subtitle: "أناقة وراحة في كل خطوة", mark: "02", tone: "women", href: "/products?category=women" },
-  { title: "أحذية أطفال", subtitle: "راحة وحركة لكل خطوة صغيرة", mark: "03", tone: "kids", href: "/products?category=kids" },
-  { title: "وصل حديثًا", subtitle: "أحدث الموديلات المضافة للمتجر", mark: "04", tone: "new", href: "/products?category=new" },
+  { title: "أحذية رجالي", subtitle: "ستايل يومي • كاجوال • رياضي", mark: "♂", tone: "men", href: "/products?category=men" },
+  { title: "أحذية حريمي", subtitle: "أناقة وراحة في كل خطوة", mark: "♀", tone: "women", href: "/products?category=women" },
+  { title: "أحذية أطفال", subtitle: "راحة وحركة لكل خطوة صغيرة", mark: "👟", tone: "kids", href: "/products?category=kids" },
+  { title: "وصل حديثًا", subtitle: "أحدث الموديلات المضافة للمتجر", mark: "✦", tone: "new", href: "/products?category=new" },
 ];
 
 export default function Home() {
@@ -37,7 +37,7 @@ export default function Home() {
             <a className="primary-button" href="/products">تصفح المنتجات <span>←</span></a>
             <a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">اسألنا عن الموديلات ↗</a>
           </div>
-          <div className="hero-note"><span>01</span> ستايل يناسبك <i/> <span>02</span> اختيارك على مزاجك</div>
+          <div className="hero-note"><span>✦</span> ستايل يناسبك <i/> <span>↗</span> اختيارك على مزاجك</div>
         </div>
         <div className="hero-art" aria-label="تصميم فني تجريدي مستوحى من الأحذية">
           <div className="art-orbit orbit-one"/><div className="art-orbit orbit-two"/>
