@@ -3,7 +3,7 @@
 import { useState } from "react";
 import LeadCapture from "@/app/components/LeadCapture";
 
-const whatsapp = "https://wa.me/201155676181";
+const whatsapp = "https://wa.me/201055676181";
 const categories = [
   { title: "أحذية رجالي", subtitle: "ستايل يومي • كاجوال • رياضي", mark: "01", tone: "men", href: "/products?category=men" },
   { title: "أحذية حريمي", subtitle: "أناقة وراحة في كل خطوة", mark: "02", tone: "women", href: "/products?category=women" },
