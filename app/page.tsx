@@ -5,11 +5,19 @@ import LeadCapture from "@/app/components/LeadCapture";
 
 const whatsapp = "https://wa.me/201055676181";
 const categories = [
-  { title: "أحذية رجالي", subtitle: "ستايل يومي • كاجوال • رياضي", mark: "♂", tone: "men", href: "/products?category=men" },
-  { title: "أحذية حريمي", subtitle: "أناقة وراحة في كل خطوة", mark: "♀", tone: "women", href: "/products?category=women" },
-  { title: "أحذية أطفال", subtitle: "راحة وحركة لكل خطوة صغيرة", mark: "👟", tone: "kids", href: "/products?category=kids" },
-  { title: "وصل حديثًا", subtitle: "أحدث الموديلات المضافة للمتجر", mark: "✦", tone: "new", href: "/products?category=new" },
+  { title: "أحذية رجالي", subtitle: "ستايل يومي • كاجوال • رياضي", mark: "men", tone: "men", href: "/products?category=men" },
+  { title: "أحذية حريمي", subtitle: "أناقة وراحة في كل خطوة", mark: "women", tone: "women", href: "/products?category=women" },
+  { title: "أحذية أطفال", subtitle: "راحة وحركة لكل خطوة صغيرة", mark: "kids", tone: "kids", href: "/products?category=kids" },
+  { title: "وصل حديثًا", subtitle: "أحدث الموديلات المضافة للمتجر", mark: "new", tone: "new", href: "/products?category=new" },
 ];
+
+
+function CategoryIcon({ type }: { type: string }) {
+  if (type === "women") return <svg viewBox="0 0 120 100" aria-hidden="true" className="category-icon"><path d="M18 69c10-2 19-8 27-20l12-20c3-5 8-6 12-2l11 13c7 8 16 13 27 16l-5 12c-15 2-28 4-43 4H24c-5 0-8-1-6-3Z" fill="currentColor" opacity=".13"/><path d="M17 70c13-3 22-11 30-24l10-17c3-5 8-5 12 0l10 12c7 8 16 12 27 15l-5 12c-14 3-29 4-44 4H24c-5 0-8-1-7-2Z" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinejoin="round"/><path d="M18 71l-3 10h15l4-7M42 69l-2 8M56 45l13 7M69 42l-5 10" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M31 82h60" stroke="currentColor" strokeWidth="2" opacity=".25" strokeLinecap="round"/></svg>;
+  if (type === "kids") return <svg viewBox="0 0 120 100" aria-hidden="true" className="category-icon"><path d="M17 62c9-2 17-8 24-17l12-14c3-4 8-3 11 1l12 15c6 7 16 10 26 13l5 10c-8 7-19 9-33 9H26c-10 0-14-7-9-17Z" fill="currentColor" opacity=".13"/><path d="M17 62c9-2 17-8 24-17l12-14c3-4 8-3 11 1l12 15c6 7 16 10 26 13l5 10c-8 7-19 9-33 9H26c-10 0-14-7-9-17Z" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinejoin="round"/><path d="M48 43l11 5m-6-12 12 7m-7-13 12 8M17 68h87" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/><circle cx="85" cy="26" r="5" fill="#ff6a1a"/><path d="M94 20l3-5m4 15 6 1" stroke="#ff6a1a" strokeWidth="2.5" strokeLinecap="round"/></svg>;
+  if (type === "new") return <svg viewBox="0 0 120 100" aria-hidden="true" className="category-icon"><path d="M60 12l9 28 29 10-29 10-9 28-10-28-28-10 28-10 10-28Z" fill="currentColor" opacity=".14"/><path d="M60 12l9 28 29 10-29 10-9 28-10-28-28-10 28-10 10-28Z" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinejoin="round"/><path d="M94 17l3 8 8 3-8 3-3 8-3-8-8-3 8-3 3-8ZM23 62l3 6 6 3-6 2-3 7-2-7-7-2 7-3 2-6Z" fill="#ff6a1a"/></svg>;
+  return <svg viewBox="0 0 120 100" aria-hidden="true" className="category-icon"><path d="M14 59c12-2 22-9 31-20l10-12c4-4 8-3 11 1l13 15c7 7 17 11 28 14l-1 13c-12 6-26 8-43 8H27c-11 0-17-8-13-19Z" fill="currentColor" opacity=".13"/><path d="M14 59c12-2 22-9 31-20l10-12c4-4 8-3 11 1l13 15c7 7 17 11 28 14l-1 13c-12 6-26 8-43 8H27c-11 0-17-8-13-19Z" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinejoin="round"/><path d="M48 42l12 5m-6-13 12 6m-6-13 11 7M15 66h91" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/><path d="M30 81h54" stroke="currentColor" strokeWidth="2" opacity=".25" strokeLinecap="round"/></svg>;
+}
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,8 +68,8 @@ export default function Home() {
         <div className="category-grid">
           {categories.map((category) => <article className={"category-card " + category.tone} key={category.mark}>
             <a className="category-browse" href={category.href} aria-label={"تصفح " + category.title}>
-              <div className="category-top"><span>STEPUP / {category.mark}</span><span>↙</span></div>
-              <div className="category-shape"><div className="shape-ring"/><div className="shape-block">{category.mark}</div></div>
+              <div className="category-top"><span>STEPUP / {category.title}</span><span>↙</span></div>
+              <div className="category-shape"><div className="shape-ring"/><div className="shape-block"><CategoryIcon type={category.mark} /></div></div>
               <div className="category-info"><div><h3>{category.title}</h3><p>{category.subtitle}</p></div><span aria-hidden="true">←</span></div>
               <span className="category-browse-label">تصفح المنتجات</span>
             </a>
